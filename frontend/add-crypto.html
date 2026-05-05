@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Add Crypto</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .box {
+      background: #1e293b;
+      padding: 25px;
+      border-radius: 10px;
+      width: 350px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 6px 0;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #3b82f6;
+      border: none;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #2563eb;
+    }
+
+    .msg {
+      font-size: 12px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="box">
+
+    <h2>Add Crypto</h2>
+    <p>Add new coin to dashboard</p>
+
+    <form id="cryptoForm">
+
+      <input id="name" placeholder="Coin Name">
+      <input id="symbol" placeholder="Symbol">
+      <input id="price" placeholder="Price">
+      <input id="image" placeholder="Image file (btc.png)">
+      <input id="change" placeholder="24h Change">
+
+      <button type="submit">Add Crypto</button>
+
+      <div id="msg" class="msg"></div>
+
+    </form>
+
+  </div>
+
+  <script>
+    const form = document.getElementById("cryptoForm");
+    const msg = document.getElementById("msg");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const res = await fetch("http://localhost:5000/api/crypto", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name.value,
+          symbol: symbol.value,
+          price: price.value,
+          image: image.value,
+          change24h: change.value
+        })
+      });
+
+      if (res.ok) {
+        msg.innerHTML = "Crypto added successfully!";
+        form.reset();
+      } else {
+        msg.innerHTML = "Error adding crypto";
+      }
+    });
+  </script>
+
+</body>
+</html>
+<footer style="text-align:center; padding:15px; font-size:12px; color:gray;">
+  Demo Project – For educational purposes only. Do not enter real personal information.
+</footer>

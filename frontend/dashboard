@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #0b1220;
+      color: white;
+    }
+
+    header {
+      background: #111827;
+      padding: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      background: #1f2937;
+      padding: 10px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+    }
+
+    #cryptoContainer {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      padding: 20px;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .green { color: lightgreen; }
+    .red { color: #ff4d4d; }
+  </style>
+</head>
+
+<body>
+
+<header>Crypto Dashboard</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="profile.html">Profile</a>
+  <a href="add-crypto.html">Add Crypto</a>
+  <a href="login.html">Logout</a>
+</nav>
+
+<div id="cryptoContainer"></div>
+
+<script>
+async function loadCrypto() {
+  const res = await fetch("http://localhost:5000/api/crypto");
+  const data = await res.json();
+
+  const container = document.getElementById("cryptoContainer");
+  container.innerHTML = "";
+
+  data.forEach(c => {
+    const color = c.change24h >= 0 ? "green" : "red";
+
+    container.innerHTML += `
+      <div class="card">
+        <img src="images/${c.image}" width="40">
+        <h3>${c.name}</h3>
+        <p>$${c.price}</p>
+        <p class="${color}">${c.change24h}%</p>
+      </div>
+    `;
+  });
+}
+
+loadCrypto();
+setInterval(loadCrypto, 15000);
+</script>
+
+</body>
+</html>
+const token = localStorage.getItem("token");
+
+if (!token) {
+  window.location.href = "login.html";
+}
+
+const user = JSON.parse(localStorage.getItem("user"));
+
+if (user) {
+  document.getElementById("welcomeText").innerText =
+    `Welcome, ${user.name}`;
+}
+
+async function loadCrypto() {
+  const res = await fetch("http://localhost:5000/api/crypto");
+  const data = await res.json();
+
+  const container = document.getElementById("cryptoContainer");
+  container.innerHTML = "";
+
+  data.forEach(c => {
+    const color = c.change24h >= 0 ? "green" : "red";
+
+    container.innerHTML += `
+      <div class="card">
+        <img src="images/${c.image}">
+        <h3>${c.name} (${c.symbol})</h3>
+        <p>$${c.price}</p>
+        <p class="${color}">${c.change24h}%</p>
+      </div>
+    `;
+  });
+}
+
+loadCrypto();
+setInterval(loadCrypto, 15000);
+<footer style="text-align:center; padding:15px; font-size:12px; color:gray;">
+  Demo Project – For educational purposes only. Do not enter real personal information.
+</footer>
